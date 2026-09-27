@@ -122,15 +122,15 @@ st.divider()
 if st.button("🌊 Assess Flood Risk", use_container_width=True):
 
     input_data = pd.DataFrame({
-        "Rainfall": [rainfall],
-        "Temperature": [temperature],
-        "Humidity": [humidity],
-        "River Discharge": [river_discharge],
-        "Water Level": [water_level],
-        "Elevation": [elevation],
-        "Land Cover": [land_cover],
-        "Soil Type": [soil_type]
-    })
+    "Rainfall (mm)": [rainfall],
+    "Temperature (degC)": [temperature],
+    "Humidity (%)": [humidity],
+    "River Discharge (m3/s)": [river_discharge],
+    "Water Level (m)": [water_level],
+    "Elevation (m)": [elevation],
+    "Land Cover": [land_cover],
+    "Soil Type": [soil_type]
+})
 
     try:
         prediction = model.predict(input_data)
