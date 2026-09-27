@@ -151,5 +151,5 @@ st.caption(
     "using the environmental and geographical conditions provided above."
 )
 
-    except Exception as e:
+except Exception as e:
         st.error(f"Prediction error: {e}")
