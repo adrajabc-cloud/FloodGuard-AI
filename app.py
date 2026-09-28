@@ -102,9 +102,10 @@ st.markdown(
 # TWO TABS
 # -----------------------------
 
-tab1, tab2 = st.tabs([
+tab1, tab2, tab3 = st.tabs([
     "🔍 Risk Assessment",
-    "🛡️ Preparedness Guide"
+    "🛡️ Preparedness Guide",
+    "📈 Data Analysis"
 ])
 
 
@@ -456,7 +457,140 @@ with tab2:
 
             st.markdown("</div>", unsafe_allow_html=True)
 
+# =========================================================
+# TAB 3 — DATA ANALYSIS
+# =========================================================
 
+with tab3:
+
+    st.header("📈 Data Analysis")
+
+    st.write(
+        "Explore the relationships between rainfall and other "
+        "numerical environmental factors present in the "
+        "FloodGuard AI dataset."
+    )
+
+    try:
+
+        graph_data = pd.read_csv("floodguard_dataset.csv")
+
+        required_columns = [
+            "Rainfall (mm)",
+            "Temperature (degC)",
+            "Humidity (%)",
+            "River Discharge (m3/s)",
+            "Water Level (m)",
+            "Elevation (m)"
+        ]
+
+        missing_columns = [
+            col for col in required_columns
+            if col not in graph_data.columns
+        ]
+
+        if missing_columns:
+
+            st.error(
+                "The following required columns are missing "
+                f"from the dataset: {missing_columns}"
+            )
+
+        else:
+
+            st.subheader(
+                "🌧️ Rainfall Relationships with Environmental Factors"
+            )
+
+            st.caption(
+                "Each scatter plot shows how rainfall values "
+                "are distributed in relation to another numerical "
+                "environmental factor in the dataset."
+            )
+
+            fig, axes = plt.subplots(
+                2,
+                3,
+                figsize=(15, 8)
+            )
+
+            relationships = [
+                (
+                    "Temperature (degC)",
+                    "Temperature (°C)"
+                ),
+                (
+                    "Humidity (%)",
+                    "Humidity (%)"
+                ),
+                (
+                    "River Discharge (m3/s)",
+                    "River Discharge (m³/s)"
+                ),
+                (
+                    "Water Level (m)",
+                    "Water Level (m)"
+                ),
+                (
+                    "Elevation (m)",
+                    "Elevation (m)"
+                )
+            ]
+
+            for ax, (column, label) in zip(
+                axes.flat,
+                relationships
+            ):
+
+                sns.scatterplot(
+                    data=graph_data,
+                    x="Rainfall (mm)",
+                    y=column,
+                    ax=ax,
+                    alpha=0.6
+                )
+
+                ax.set_title(
+                    f"Rainfall vs {label}"
+                )
+
+                ax.set_xlabel(
+                    "Rainfall (mm)"
+                )
+
+                ax.set_ylabel(
+                    label
+                )
+
+                ax.grid(
+                    alpha=0.2
+                )
+
+            # Hide unused sixth plot
+            axes[1, 2].axis("off")
+
+            plt.tight_layout()
+
+            st.pyplot(fig)
+
+            st.info(
+                "These visualizations are exploratory data analysis. "
+                "They show relationships within the dataset and "
+                "do not by themselves determine flood risk."
+            )
+
+    except FileNotFoundError:
+
+        st.error(
+            "Dataset file not found. Please add "
+            "'floodguard_dataset.csv' to the same folder as app.py."
+        )
+
+    except Exception as e:
+
+        st.error(
+            f"Unable to generate the analysis graphs: {e}"
+            )
 # -----------------------------
 # DISCLAIMER
 # -----------------------------
@@ -470,3 +604,4 @@ st.markdown(
     '</div>',
     unsafe_allow_html=True
 )
+
