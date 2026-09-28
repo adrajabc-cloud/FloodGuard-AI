@@ -88,7 +88,7 @@ except Exception as e:
 # -----------------------------
 
 st.markdown(
-    '<div class="main-title">🌊 FloodGuard AI</div>',
+    '<div class="main-title">🌧️ FloodGuard AI</div>',
     unsafe_allow_html=True
 )
 
@@ -103,7 +103,7 @@ st.markdown(
 # -----------------------------
 
 tab1, tab2 = st.tabs([
-    "🌊 Risk Assessment",
+    "🔍 Risk Assessment",
     "🛡️ Preparedness Guide"
 ])
 
