@@ -473,7 +473,7 @@ with tab3:
 
     try:
 
-        graph_data = pd.read_csv("floodguard_dataset.csv")
+        graph_data = pd.read_excel("flood_risk_dataset_india_v2.xlsx")
 
         required_columns = [
             "Rainfall (mm)",
