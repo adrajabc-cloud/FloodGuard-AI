@@ -12,164 +12,112 @@ import seaborn as sns
 
 st.set_page_config(
     page_title="FloodGuard AI",
-    page_icon="f4a295e4-0cba-4281-8d15-ba8833888662.png",
-    layout="wide",
-    initial_sidebar_state="collapsed"
+    page_icon="floodguard_icon.png",
+    layout="wide"
 )
 
 
 # ============================================================
-# CUSTOM FLOODGUARD AI STYLING
+# CUSTOM UI / BACKGROUND
 # ============================================================
 
-st.markdown("""
-<style>
+st.markdown(
+    """
+    <style>
 
-    /* ---------- APP BACKGROUND ---------- */
-
+    /* Main background */
     .stApp {
-        background-color: #f4f9fc;
+        background:
+            radial-gradient(circle at 10% 10%, rgba(0, 170, 190, 0.16), transparent 28%),
+            radial-gradient(circle at 90% 20%, rgba(30, 100, 180, 0.14), transparent 30%),
+            linear-gradient(135deg, #eef9fc 0%, #f5fbfd 48%, #e8f5fa 100%);
     }
 
+    /* Main content width */
     .block-container {
-        padding-top: 1.5rem;
-        padding-bottom: 2rem;
-        max-width: 1400px;
+        padding-top: 2rem;
+        padding-bottom: 3rem;
+        max-width: 1200px;
     }
 
-
-    /* ---------- HEADER ---------- */
-
-    .brand-header {
+    /* Header */
+    .flood-header {
         background: linear-gradient(
             135deg,
-            #e8f7ff 0%,
-            #f8fcff 55%,
-            #e6f7f5 100%
+            rgba(8, 74, 102, 0.98),
+            rgba(10, 128, 145, 0.95)
         );
-
-        border: 1px solid #c7e5f5;
-        border-radius: 18px;
-        padding: 1.5rem 1.8rem;
-        margin-bottom: 1.2rem;
-        box-shadow: 0 4px 18px rgba(15, 76, 92, 0.08);
+        padding: 2rem 2.2rem;
+        border-radius: 22px;
+        margin-bottom: 1.8rem;
+        box-shadow: 0 10px 30px rgba(0, 70, 100, 0.16);
     }
 
-    .brand-title {
-        font-size: 2.7rem;
-        font-weight: 800;
-        color: #073b73;
+    .flood-header h1 {
+        color: white;
         margin: 0;
-    }
-
-    .brand-ai {
-        color: #079bd8;
-    }
-
-    .brand-subtitle {
-        font-size: 1.05rem;
-        font-weight: 600;
-        color: #315b78;
-        margin-top: 0.3rem;
-    }
-
-    .brand-motto {
-        color: #52748b;
-        font-size: 0.95rem;
-        margin-top: 0.45rem;
-    }
-
-
-    /* ---------- SECTION HEADINGS ---------- */
-
-    .section-title {
-        font-size: 1.45rem;
+        font-size: 2.5rem;
         font-weight: 750;
-        color: #084c75;
-        margin-top: 0.5rem;
-        margin-bottom: 0.3rem;
     }
 
-    .section-description {
-        color: #536b7a;
-        margin-bottom: 1rem;
+    .flood-header p {
+        color: rgba(255, 255, 255, 0.9);
+        margin-top: 0.45rem;
+        font-size: 1.05rem;
     }
 
-
-    /* ---------- CARDS ---------- */
-
-    .info-card {
-        background: white;
-        border: 1px solid #d5e8f2;
-        border-radius: 15px;
-        padding: 1.2rem 1.4rem;
-        margin-bottom: 1rem;
-        box-shadow: 0 3px 12px rgba(15, 76, 92, 0.06);
+    /* Section cards */
+    .section-card {
+        background: rgba(255, 255, 255, 0.86);
+        padding: 1.35rem 1.5rem;
+        border-radius: 18px;
+        border: 1px solid rgba(0, 100, 130, 0.10);
+        box-shadow: 0 6px 22px rgba(0, 60, 80, 0.07);
+        margin-bottom: 1.3rem;
     }
 
-    .card-title {
-        font-size: 1.15rem;
+    /* Result card */
+    .result-card {
+        background: rgba(255, 255, 255, 0.94);
+        padding: 1.6rem;
+        border-radius: 20px;
+        border: 1px solid rgba(0, 100, 130, 0.12);
+        box-shadow: 0 8px 28px rgba(0, 60, 80, 0.10);
+        margin-top: 1rem;
+    }
+
+    /* Guidance cards */
+    .guidance-card {
+        background: rgba(255, 255, 255, 0.92);
+        padding: 1.3rem 1.5rem;
+        border-radius: 18px;
+        border: 1px solid rgba(0, 100, 130, 0.10);
+        margin-top: 1rem;
+        box-shadow: 0 5px 18px rgba(0, 60, 80, 0.06);
+    }
+
+    .guidance-title {
+        font-size: 1.2rem;
         font-weight: 700;
-        color: #0b5275;
-        margin-bottom: 0.4rem;
+        margin-bottom: 0.6rem;
     }
 
-
-    /* ---------- PREPAREDNESS CARDS ---------- */
-
-    .prep-card {
-        background: white;
-        border: 1px solid #d5e8f2;
-        border-left: 5px solid #0891b2;
-        border-radius: 12px;
-        padding: 1.1rem 1.3rem;
-        margin-bottom: 1rem;
-        box-shadow: 0 3px 10px rgba(15, 76, 92, 0.05);
-    }
-
-    .prep-title {
-        color: #075985;
-        font-size: 1.15rem;
-        font-weight: 700;
-        margin-bottom: 0.5rem;
-    }
-
-
-    /* ---------- FOOTER ---------- */
-
+    /* Footer */
     .footer {
         text-align: center;
-        color: #647b89;
-        font-size: 0.82rem;
-        padding-top: 1.5rem;
-        margin-top: 2rem;
-        border-top: 1px solid #d5e8f2;
+        color: #52717c;
+        font-size: 0.85rem;
+        padding-top: 2rem;
     }
 
-
-    /* ---------- BUTTON ---------- */
-
-    div.stButton > button {
-        width: 100%;
-        border-radius: 10px;
-        font-weight: 700;
-        min-height: 3rem;
-    }
-
-
-    /* ---------- TABS ---------- */
-
-    button[data-baseweb="tab"] {
-        font-size: 1.05rem;
-        font-weight: 650;
-    }
-
-</style>
-""", unsafe_allow_html=True)
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 
 # ============================================================
-# LOAD TRAINED MODEL
+# LOAD MODEL
 # ============================================================
 
 MODEL_PATH = "floodguard_ai_model_v2.pkl"
@@ -183,467 +131,284 @@ except Exception as e:
 
 
 # ============================================================
-# FLOODGUARD HEADER
+# HEADER
 # ============================================================
 
-st.markdown("""
-<div class="brand-header">
-
-    <div class="brand-title">
-        🌊 FloodGuard <span class="brand-ai">AI</span>
+st.markdown(
+    """
+    <div class="flood-header">
+        <h1>🌊 FloodGuard AI</h1>
+        <p>
+            AI-Powered Flood Risk Assessment & Community Preparedness
+        </p>
     </div>
+    """,
+    unsafe_allow_html=True
+)
 
-    <div class="brand-subtitle">
-        AI-Powered Flood Risk Assessment & Community Preparedness
-    </div>
-
-    <div class="brand-motto">
-        Predict&nbsp;&nbsp; • &nbsp;&nbsp;Understand&nbsp;&nbsp; • &nbsp;&nbsp;Prepare
-    </div>
-
-</div>
-""", unsafe_allow_html=True)
-
-
-# ============================================================
-# TWO MAIN TABS
-# ============================================================
-
-risk_tab, preparedness_tab = st.tabs(
-    [
-        "🌊  Risk Assessment",
-        "🛡️  Flood Preparedness"
-    ]
+st.write(
+    "Enter the environmental and geographical conditions below "
+    "to assess the modeled flood risk."
 )
 
 
 # ============================================================
-# TAB 1 — RISK ASSESSMENT
+# INPUT SECTION
 # ============================================================
 
-with risk_tab:
+st.markdown(
+    """
+    <div class="section-card">
+        <h3>📊 Environmental Conditions</h3>
+        <p>
+            Provide the conditions used by the FloodGuard AI model
+            for its assessment.
+        </p>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
-    st.markdown(
-        '<div class="section-title">'
-        '📊 Environmental & Geographical Inputs'
-        '</div>',
-        unsafe_allow_html=True
+col1, col2 = st.columns(2)
+
+
+with col1:
+
+    rainfall = st.number_input(
+        "Rainfall (mm)",
+        min_value=0.0,
+        value=100.0,
+        step=1.0
     )
 
-    st.markdown(
-        '<div class="section-description">'
-        'Enter the current or hypothetical environmental conditions '
-        'to generate a FloodGuard AI assessment.'
-        '</div>',
-        unsafe_allow_html=True
+    temperature = st.number_input(
+        "Temperature (°C)",
+        value=25.0,
+        step=0.1
     )
 
-    col1, col2 = st.columns(2)
+    humidity = st.number_input(
+        "Humidity (%)",
+        min_value=0.0,
+        max_value=100.0,
+        value=70.0,
+        step=1.0
+    )
+
+    river_discharge = st.number_input(
+        "River Discharge (m³/s)",
+        min_value=0.0,
+        value=500.0,
+        step=1.0
+    )
 
 
-    # --------------------------------------------------------
-    # LEFT COLUMN
-    # --------------------------------------------------------
+with col2:
 
-    with col1:
+    water_level = st.number_input(
+        "Water Level (m)",
+        min_value=0.0,
+        value=5.0,
+        step=0.1
+    )
 
-        rainfall = st.number_input(
-            "Rainfall (mm)",
-            min_value=0.0,
-            value=100.0,
-            step=1.0
-        )
+    elevation = st.number_input(
+        "Elevation (m)",
+        min_value=0.0,
+        value=100.0,
+        step=1.0
+    )
 
-        temperature = st.number_input(
-            "Temperature (°C)",
-            value=25.0,
-            step=0.1
-        )
+    land_cover = st.selectbox(
+        "Land Cover",
+        [
+            "Forest",
+            "Agricultural",
+            "Urban",
+            "Water Body",
+            "Grassland"
+        ]
+    )
 
-        humidity = st.number_input(
-            "Humidity (%)",
-            min_value=0.0,
-            max_value=100.0,
-            value=70.0,
-            step=1.0
-        )
-
-        river_discharge = st.number_input(
-            "River Discharge",
-            min_value=0.0,
-            value=500.0,
-            step=1.0
-        )
-
-
-    # --------------------------------------------------------
-    # RIGHT COLUMN
-    # --------------------------------------------------------
-
-    with col2:
-
-        water_level = st.number_input(
-            "Water Level",
-            min_value=0.0,
-            value=5.0,
-            step=0.1
-        )
-
-        elevation = st.number_input(
-            "Elevation",
-            min_value=0.0,
-            value=100.0,
-            step=1.0
-        )
-
-        land_cover = st.selectbox(
-            "Land Cover",
-            [
-                "Forest",
-                "Agricultural",
-                "Urban",
-                "Water Body",
-                "Grassland"
-            ]
-        )
-
-        soil_type = st.selectbox(
-            "Soil Type",
-            [
-                "Sandy",
-                "Clay",
-                "Loamy",
-                "Silty"
-            ]
-        )
+    soil_type = st.selectbox(
+        "Soil Type",
+        [
+            "Sandy",
+            "Clay",
+            "Loamy",
+            "Silty"
+        ]
+    )
 
 
-    # --------------------------------------------------------
-    # ASSESS BUTTON
-    # --------------------------------------------------------
+# ============================================================
+# PREDICTION
+# ============================================================
 
-    st.write("")
+st.divider()
 
-    if st.button(
-        "🌊  Assess Flood Risk",
-        use_container_width=True,
-        type="primary"
-    ):
+if st.button(
+    "🌊 Assess Flood Risk",
+    use_container_width=True
+):
 
-        input_data = pd.DataFrame({
-            "Rainfall (mm)": [rainfall],
-            "Temperature (degC)": [temperature],
-            "Humidity (%)": [humidity],
-            "River Discharge (m3/s)": [river_discharge],
-            "Water Level (m)": [water_level],
-            "Elevation (m)": [elevation],
-            "Land Cover": [land_cover],
-            "Soil Type": [soil_type]
-        })
+    input_data = pd.DataFrame({
+        "Rainfall (mm)": [rainfall],
+        "Temperature (degC)": [temperature],
+        "Humidity (%)": [humidity],
+        "River Discharge (m3/s)": [river_discharge],
+        "Water Level (m)": [water_level],
+        "Elevation (m)": [elevation],
+        "Land Cover": [land_cover],
+        "Soil Type": [soil_type]
+    })
 
+    try:
 
-        try:
+        prediction = model.predict(input_data)
 
-            prediction = model.predict(input_data)
-
-            result = str(prediction[0])
-
-
-            # ------------------------------------------------
-            # ASSESSMENT
-            # ------------------------------------------------
-
-            st.divider()
-
-            st.markdown(
-                '<div class="section-title">'
-                '🧠 FloodGuard AI Assessment'
-                '</div>',
-                unsafe_allow_html=True
-            )
+        result = str(prediction[0])
+        result_lower = result.lower()
 
 
-            if result.lower() in ["high", "high risk", "1"]:
+        # ====================================================
+        # RISK RESULT
+        # ====================================================
 
-                st.error(
-                    f"🚨 Flood Risk: {result}"
-                )
-
-                preparedness_message = """
-                **Preparedness focus:** Conditions indicate elevated
-                predicted flood risk. Monitor official warnings,
-                avoid unnecessary travel through flood-prone areas,
-                and keep essential emergency supplies accessible.
-                """
+        st.subheader("🌊 FloodGuard AI Assessment")
 
 
-            elif result.lower() in [
-                "medium",
-                "moderate",
-                "medium risk"
-            ]:
-
-                st.warning(
-                    f"⚠️ Flood Risk: {result}"
-                )
-
-                preparedness_message = """
-                **Preparedness focus:** Continue monitoring local
-                weather and flood conditions. Keep emergency contacts,
-                essential supplies and evacuation information ready.
-                """
-
-
-            else:
-
-                st.success(
-                    f"✅ Flood Risk: {result}"
-                )
-
-                preparedness_message = """
-                **Preparedness focus:** Current input conditions
-                indicate lower predicted flood risk. Continue normal
-                monitoring, especially during periods of heavy rainfall.
-                """
-
-
-            # ------------------------------------------------
-            # WHAT THIS MEANS
-            # ------------------------------------------------
-
-            st.markdown("""
-            <div class="info-card">
-
-                <div class="card-title">
-                    💡 What This Means
-                </div>
-
-                FloodGuard AI has evaluated the environmental and
-                geographical conditions provided above using the
-                trained machine-learning model.
-
-            </div>
-            """, unsafe_allow_html=True)
-
-
-            # ------------------------------------------------
-            # PREPAREDNESS
-            # ------------------------------------------------
-
-            st.markdown(
-                f"""
-                <div class="prep-card">
-
-                    <div class="prep-title">
-                        🛡️ Community Preparedness
-                    </div>
-
-                    {preparedness_message}
-
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
-
-
-            # ------------------------------------------------
-            # DISCLAIMER
-            # ------------------------------------------------
-
-            st.caption(
-                "This assessment is generated by the trained "
-                "FloodGuard AI model using the environmental and "
-                "geographical conditions provided above. It is "
-                "intended for educational and preparedness purposes "
-                "and should not replace official emergency warnings."
-            )
-
-
-        except Exception as e:
+        if result_lower in ["high", "high risk", "1"]:
 
             st.error(
-                f"Prediction error: {e}"
+                f"🚨 HIGH FLOOD RISK\n\n"
+                f"Model prediction: {result}"
             )
 
+            guidance_title = "🛡️ High-Risk Preparedness"
 
-# ============================================================
-# TAB 2 — FLOOD PREPAREDNESS
-# ============================================================
+            do_items = [
+                "Monitor official emergency communications.",
+                "Follow instructions issued by local authorities.",
+                "Keep essential emergency supplies accessible.",
+                "Move to a safer location if authorities advise evacuation."
+            ]
 
-with preparedness_tab:
-
-    st.markdown(
-        '<div class="section-title">'
-        '🛡️ Flood Preparedness Centre'
-        '</div>',
-        unsafe_allow_html=True
-    )
-
-    st.markdown(
-        '<div class="section-description">'
-        'FloodGuard AI is not only about assessing risk — '
-        'preparedness helps communities respond effectively.'
-        '</div>',
-        unsafe_allow_html=True
-    )
+            avoid_items = [
+                "Do not enter or cross flooded areas.",
+                "Avoid rapidly flowing water.",
+                "Do not ignore official evacuation instructions."
+            ]
 
 
-    # --------------------------------------------------------
-    # BEFORE A FLOOD
-    # --------------------------------------------------------
+        elif result_lower in [
+            "medium",
+            "moderate",
+            "medium risk"
+        ]:
 
-    st.markdown("""
-    <div class="prep-card">
+            st.warning(
+                f"⚠️ MODERATE FLOOD RISK\n\n"
+                f"Model prediction: {result}"
+            )
 
-        <div class="prep-title">
-            🏠 Before a Flood
-        </div>
+            guidance_title = "🛡️ Moderate-Risk Preparedness"
 
-        <ul>
-            <li>Monitor weather forecasts and official alerts.</li>
-            <li>Keep emergency contacts easily accessible.</li>
-            <li>Prepare essential medicines, food, water and
-                important documents.</li>
-            <li>Know the safest evacuation route from your area.</li>
-            <li>Keep emergency supplies in an easily accessible
-                location.</li>
-        </ul>
+            do_items = [
+                "Monitor official weather and flood alerts.",
+                "Keep important documents and essential items protected.",
+                "Be prepared to follow local authority instructions.",
+                "Continue observing changing rainfall and water conditions."
+            ]
 
-    </div>
-    """, unsafe_allow_html=True)
-
-
-    # --------------------------------------------------------
-    # DURING A FLOOD
-    # --------------------------------------------------------
-
-    st.markdown("""
-    <div class="prep-card">
-
-        <div class="prep-title">
-            🌧️ During a Flood
-        </div>
-
-        <ul>
-            <li>Follow instructions from local authorities.</li>
-            <li>Move to safer or higher locations when advised.</li>
-            <li>Avoid walking or driving through floodwater.</li>
-            <li>Stay informed through reliable official channels.</li>
-            <li>Keep communication devices charged whenever possible.</li>
-        </ul>
-
-    </div>
-    """, unsafe_allow_html=True)
+            avoid_items = [
+                "Avoid unnecessary exposure to potentially flooded areas.",
+                "Do not ignore worsening conditions or official alerts."
+            ]
 
 
-    # --------------------------------------------------------
-    # AFTER A FLOOD
-    # --------------------------------------------------------
+        else:
 
-    st.markdown("""
-    <div class="prep-card">
+            st.success(
+                f"✅ LOW FLOOD RISK\n\n"
+                f"Model prediction: {result}"
+            )
 
-        <div class="prep-title">
-            🌱 After a Flood
-        </div>
+            guidance_title = "🛡️ Low-Risk Preparedness"
 
-        <ul>
-            <li>Return only when authorities indicate that it is safe.</li>
-            <li>Avoid potentially contaminated water.</li>
-            <li>Be cautious around damaged buildings and infrastructure.</li>
-            <li>Report hazards to the appropriate local authorities.</li>
-            <li>Continue monitoring official updates.</li>
-        </ul>
+            do_items = [
+                "Continue monitoring local weather conditions.",
+                "Stay aware of official flood and weather alerts.",
+                "Keep important documents and essential items protected.",
+                "Remain prepared for changing environmental conditions."
+            ]
 
-    </div>
-    """, unsafe_allow_html=True)
-
-
-    # --------------------------------------------------------
-    # EMERGENCY KIT
-    # --------------------------------------------------------
-
-    st.markdown("""
-    <div class="info-card">
-
-        <div class="card-title">
-            🎒 Emergency Preparedness Kit
-        </div>
-
-        <p>
-        A basic emergency kit can include:
-        </p>
-
-        <ul>
-            <li>Drinking water and non-perishable food</li>
-            <li>First-aid supplies</li>
-            <li>Flashlight and spare batteries</li>
-            <li>Essential medicines</li>
-            <li>Important documents stored safely</li>
-            <li>Charged communication devices / power bank</li>
-        </ul>
-
-    </div>
-    """, unsafe_allow_html=True)
+            avoid_items = [
+                "Do not assume conditions cannot change.",
+                "Do not ignore sudden increases in rainfall or water levels."
+            ]
 
 
-    # --------------------------------------------------------
-    # COMMUNITY PREPAREDNESS
-    # --------------------------------------------------------
+        # ====================================================
+        # PREPAREDNESS GUIDANCE
+        # ====================================================
 
-    st.markdown("""
-    <div class="info-card">
+        st.markdown(
+            f"""
+            <div class="guidance-card">
+                <div class="guidance-title">
+                    {guidance_title}
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
-        <div class="card-title">
-            🤝 Community Preparedness
-        </div>
-
-        <p>
-        Flood resilience improves when individuals and communities
-        prepare together.
-        </p>
-
-        <ul>
-            <li>Share reliable flood alerts with vulnerable neighbours.</li>
-            <li>Know local evacuation and shelter information.</li>
-            <li>Help identify people who may need additional assistance.</li>
-            <li>Participate in local preparedness activities.</li>
-            <li>Rely on official emergency information during disasters.</li>
-        </ul>
-
-    </div>
-    """, unsafe_allow_html=True)
+        guidance_col1, guidance_col2 = st.columns(2)
 
 
-    # --------------------------------------------------------
-    # FLOODGUARD MESSAGE
-    # --------------------------------------------------------
+        with guidance_col1:
 
-    st.success(
-        "🌊 FloodGuard AI: Predict → Understand → Prepare"
-    )
+            st.markdown("### ✅ What to do")
 
-    st.caption(
-        "FloodGuard AI is an educational project designed to "
-        "demonstrate how machine learning can support flood-risk "
-        "awareness and community preparedness."
-    )
+            for item in do_items:
+                st.markdown(f"- {item}")
+
+
+        with guidance_col2:
+
+            st.markdown("### ⚠️ What to avoid")
+
+            for item in avoid_items:
+                st.markdown(f"- {item}")
+
+
+        # ====================================================
+        # DISCLAIMER
+        # ====================================================
+
+        st.info(
+            "FloodGuard AI provides a modeled flood-risk assessment "
+            "and general preparedness guidance. It does not replace "
+            "official weather warnings, emergency services, or "
+            "instructions from local authorities."
+        )
+
+
+    except Exception as e:
+
+        st.error(f"Prediction error: {e}")
 
 
 # ============================================================
 # FOOTER
 # ============================================================
 
-st.markdown("""
-<div class="footer">
-
-    <b>🌊 FloodGuard AI</b>
-    &nbsp; • &nbsp;
-    AI for Flood Risk Awareness & Preparedness
-
-    <br><br>
-
-    Predict &nbsp;•&nbsp; Understand &nbsp;•&nbsp; Prepare
-
-</div>
-""", unsafe_allow_html=True)
+st.markdown(
+    """
+    <div class="footer">
+        FloodGuard AI • AI-Based Flood Risk Assessment & Preparedness
+    </div>
+    """,
+    unsafe_allow_html=True
+)
