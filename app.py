@@ -473,7 +473,14 @@ with tab3:
 
     try:
 
-        graph_data = pd.read_excel("flood_risk_dataset_india_v2(1).xlsx")
+        import os
+
+DATASET_PATH = os.path.join(
+    os.path.dirname(__file__),
+    "flood_risk_dataset_india_v2(1).xlsx"
+)
+
+graph_data = pd.read_excel(DATASET_PATH)
 
         required_columns = [
             "Rainfall (mm)",
