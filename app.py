@@ -460,7 +460,6 @@ with tab2:
 # =========================================================
 # TAB 3 — DATA ANALYSIS
 # =========================================================
-
 with tab3:
 
     st.header("📈 Data Analysis")
@@ -471,132 +470,167 @@ with tab3:
         "FloodGuard AI dataset."
     )
 
-    try:
+    import os
 
-        import os
-        DATASET_PATH = os.path.join(
+    DATASET_PATH = os.path.join(
         os.path.dirname(__file__),
-        "flood_risk_dataset_india_v2(1).xlsx"
-        )
+        "flood_risk_dataset_india_v2.xlsx"
+    )
 
-        graph_data = pd.read_excel(DATASET_PATH)
+    # Check whether the dataset exists
+    if not os.path.exists(DATASET_PATH):
 
-        required_columns = [
-            "Rainfall (mm)",
-            "Temperature (degC)",
-            "Humidity (%)",
-            "River Discharge (m3/s)",
-            "Water Level (m)",
-            "Elevation (m)"
-        ]
+        st.error("Dataset file was not found.")
 
-        missing_columns = [
-            col for col in required_columns
-            if col not in graph_data.columns
-        ]
+        st.write("Expected file location:")
+        st.code(DATASET_PATH)
 
-        if missing_columns:
+        st.write("Files currently available beside app.py:")
+
+        try:
+            available_files = os.listdir(
+                os.path.dirname(__file__)
+            )
+
+            st.code(
+                "\n".join(available_files)
+            )
+
+        except Exception as e:
 
             st.error(
-                "The following required columns are missing "
-                f"from the dataset: {missing_columns}"
+                f"Could not inspect the application folder: {e}"
             )
 
-        else:
+    else:
 
-            st.subheader(
-                "🌧️ Rainfall Relationships with Environmental Factors"
+        st.success("Dataset file found.")
+
+        try:
+
+            graph_data = pd.read_excel(
+                DATASET_PATH,
+                engine="openpyxl"
             )
 
-            st.caption(
-                "Each scatter plot shows how rainfall values "
-                "are distributed in relation to another numerical "
-                "environmental factor in the dataset."
-            )
+            st.success("Excel dataset loaded successfully.")
 
-            fig, axes = plt.subplots(
-                2,
-                3,
-                figsize=(15, 8)
-            )
-
-            relationships = [
-                (
-                    "Temperature (degC)",
-                    "Temperature (°C)"
-                ),
-                (
-                    "Humidity (%)",
-                    "Humidity (%)"
-                ),
-                (
-                    "River Discharge (m3/s)",
-                    "River Discharge (m³/s)"
-                ),
-                (
-                    "Water Level (m)",
-                    "Water Level (m)"
-                ),
-                (
-                    "Elevation (m)",
-                    "Elevation (m)"
-                )
+            required_columns = [
+                "Rainfall (mm)",
+                "Temperature (degC)",
+                "Humidity (%)",
+                "River Discharge (m3/s)",
+                "Water Level (m)",
+                "Elevation (m)"
             ]
 
-            for ax, (column, label) in zip(
-                axes.flat,
-                relationships
-            ):
+            missing_columns = [
+                col
+                for col in required_columns
+                if col not in graph_data.columns
+            ]
 
-                sns.scatterplot(
-                    data=graph_data,
-                    x="Rainfall (mm)",
-                    y=column,
-                    ax=ax,
-                    alpha=0.6
+            if missing_columns:
+
+                st.error(
+                    "The following required columns are missing "
+                    f"from the dataset: {missing_columns}"
                 )
 
-                ax.set_title(
-                    f"Rainfall vs {label}"
+                st.write("Columns detected in the dataset:")
+
+                st.code(
+                    "\n".join(
+                        graph_data.columns.astype(str)
+                    )
                 )
 
-                ax.set_xlabel(
-                    "Rainfall (mm)"
+            else:
+
+                st.subheader(
+                    "🌧️ Rainfall Relationships with Environmental Factors"
                 )
 
-                ax.set_ylabel(
-                    label
+                st.caption(
+                    "These scatter plots show relationships within "
+                    "the FloodGuard AI dataset. They are for exploratory "
+                    "data analysis and do not by themselves determine "
+                    "flood risk."
                 )
 
-                ax.grid(
-                    alpha=0.2
+                fig, axes = plt.subplots(
+                    2,
+                    3,
+                    figsize=(15, 8)
                 )
 
-            # Hide unused sixth plot
-            axes[1, 2].axis("off")
+                relationships = [
+                    (
+                        "Temperature (degC)",
+                        "Temperature (°C)"
+                    ),
+                    (
+                        "Humidity (%)",
+                        "Humidity (%)"
+                    ),
+                    (
+                        "River Discharge (m3/s)",
+                        "River Discharge (m³/s)"
+                    ),
+                    (
+                        "Water Level (m)",
+                        "Water Level (m)"
+                    ),
+                    (
+                        "Elevation (m)",
+                        "Elevation (m)"
+                    )
+                ]
 
-            plt.tight_layout()
+                for ax, (column, label) in zip(
+                    axes.flat,
+                    relationships
+                ):
 
-            st.pyplot(fig)
+                    sns.scatterplot(
+                        data=graph_data,
+                        x="Rainfall (mm)",
+                        y=column,
+                        ax=ax,
+                        alpha=0.6
+                    )
 
-            st.info(
-                "These visualizations are exploratory data analysis. "
-                "They show relationships within the dataset and "
-                "do not by themselves determine flood risk."
+                    ax.set_title(
+                        f"Rainfall vs {label}"
+                    )
+
+                    ax.set_xlabel(
+                        "Rainfall (mm)"
+                    )
+
+                    ax.set_ylabel(
+                        label
+                    )
+
+                    ax.grid(
+                        alpha=0.2
+                    )
+
+                axes[1, 2].axis("off")
+
+                plt.tight_layout()
+
+                st.pyplot(fig)
+
+        except Exception as e:
+
+            st.error(
+                "The dataset file was found, but it could not be "
+                "loaded or processed."
             )
 
-    except FileNotFoundError:
-
-        st.error(
-            "Dataset file not found. Please add "
-            "'floodguard_dataset.csv' to the same folder as app.py."
-        )
-
-    except Exception as e:
-
-        st.error(
-            f"Unable to generate the analysis graphs: {e}"
-            )
+            st.exception(e)
+                    
 # -----------------------------
 # DISCLAIMER
 # -----------------------------
