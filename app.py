@@ -126,7 +126,7 @@ with tab0:
             use_container_width=True
         )
 
-    st.header("🌊 About FloodGuard AI")
+    st.header("⛈️ About FloodGuard AI")
 
     st.write(
         "FloodGuard AI is a machine-learning-based flood-risk "
