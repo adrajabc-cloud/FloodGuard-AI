@@ -99,15 +99,92 @@ st.markdown(
 
 
 # -----------------------------
-# TWO TABS
+# FOUR TABS
 # -----------------------------
 
-tab1, tab2, tab3 = st.tabs([
+tab0, tab1, tab2, tab3 = st.tabs([
+    "🏠 Home",
     "🔍 Risk Assessment",
     "🛡️ Preparedness Guide",
     "📈 Data Analysis"
 ])
+# =========================================================
+# TAB 0 — HOME
+# =========================================================
+with tab0:
+    col1, col2 = st.columns(2)
 
+    with col1:
+        st.image(
+            "72878753-ce27-4ef7-9e1c-ec6daec06e59.jpeg",
+            use_container_width=True
+        )
+
+    with col2:
+        st.image(
+            "8317304c-7460-4f5f-8f05-acec2c11ef53.jpeg",
+            use_container_width=True
+        )
+
+    st.header("🌊 About FloodGuard AI")
+
+    st.write(
+        "FloodGuard AI is a machine-learning-based flood-risk "
+        "assessment and awareness tool. It analyzes environmental "
+        "and geographical conditions provided by the user and "
+        "generates a modeled flood-risk assessment."
+    )
+
+    st.subheader("🔎 What does FloodGuard use?")
+
+    st.write(
+        "The model uses eight inputs representing rainfall, "
+        "weather, water conditions, terrain, land cover, and soil."
+    )
+
+    input_info = pd.DataFrame({
+        "Input": [
+            "Rainfall (mm)",
+            "Temperature (°C)",
+            "Humidity (%)",
+            "River Discharge (m³/s)",
+            "Water Level (m)",
+            "Elevation (m)",
+            "Land Cover",
+            "Soil Type"
+        ],
+        "What it represents": [
+            "Amount of rainfall",
+            "Air temperature",
+            "Moisture level in the air",
+            "Amount of water flowing through a river",
+            "Water level in the area",
+            "Height of the location above sea level",
+            "Type of land surface",
+            "Type of soil"
+        ]
+    })
+
+    st.dataframe(
+        input_info,
+        use_container_width=True,
+        hide_index=True
+    )
+
+    st.subheader("🚀 How to use FloodGuard")
+
+    st.write(
+        "Go to the Risk Assessment tab, enter the available "
+        "environmental and geographical conditions, and click "
+        "the assessment button to obtain the model's result."
+    )
+
+    st.info(
+        "FloodGuard AI provides a model-based assessment using "
+        "the conditions entered by the user. It does not replace "
+        "official weather warnings, emergency services, or "
+        "instructions from local authorities."
+    )
 
 # =========================================================
 # TAB 1 — RISK ASSESSMENT
