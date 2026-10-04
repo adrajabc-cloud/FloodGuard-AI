@@ -750,9 +750,9 @@ model_comparison = pd.DataFrame({"Model": [
         ]
     })
  st.dataframe(
-        model_comparison,
-        use_container_width=True,
-        hide_index=True)
+model_comparison,
+use_container_width=True,
+hide_index=True)
 st.success(
         " Logistic Regression was selected as the final model because it "
         "achieved the highest Accuracy, F1 Score and ROC-AUC among the "
