@@ -708,6 +708,63 @@ with tab3:
 
             st.exception(e)
 
+with tab3:
+    
+
+    # --- Model Comparison & Selection ---
+    st.subheader("🧠 Model Comparison & Selection")
+
+    st.write(
+        "To select the final model for FloodGuard AI, multiple classification "
+        "algorithms were trained and evaluated on the same dataset. Their "
+        "performance was compared using Accuracy, Precision, Recall, F1 Score "
+        "and ROC-AUC."
+    )
+
+    # Model comparison results
+    model_comparison = pd.DataFrame({
+        "Model": [
+            "Logistic Regression",
+            "Gradient Boosting",
+            "Hist. Gradient Boosting",
+            "Random Forest",
+            "Extra Trees"
+        ],
+        "Accuracy": [
+            "87.63%",
+            "86.85%",
+            "86.81%",
+            "86.72%",
+            "86.62%"
+        ],
+        "F1 Score": [
+            "87.62%",
+            "86.82%",
+            "86.80%",
+            "86.72%",
+            "86.60%"
+        ],
+        "ROC-AUC": [
+            "0.9553",
+            "0.9511",
+            "0.9485",
+            "0.9483",
+            "0.9470"
+        ]
+    })
+
+    st.dataframe(
+        model_comparison,
+        use_container_width=True,
+        hide_index=True
+    )
+
+    st.success(
+        "✅ Logistic Regression was selected as the final model because it "
+        "achieved the highest Accuracy, F1 Score and ROC-AUC among the "
+        "evaluated models."
+    )
+
 
 # -----------------------------
 # DISCLAIMER
